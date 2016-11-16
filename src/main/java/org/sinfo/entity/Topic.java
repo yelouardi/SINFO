@@ -16,6 +16,11 @@ import javax.persistence.Table;
 @Table(name = "topic")
 public class Topic implements Serializable {
 
+	public Topic() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	/**
 	 * 
 	 */
@@ -25,9 +30,9 @@ public class Topic implements Serializable {
 	private Long idTopic;
 	private String codeTopic;
 	private String titleTopic;
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "codeTag")
-	private Tagg tag;
+	private Tagg tagg;
 	@Lob
 	private String descrTopic;
 
@@ -64,11 +69,16 @@ public class Topic implements Serializable {
 	}
 
 	public Tagg getTag() {
-		return tag;
+		return tagg;
 	}
 
-	public void setTag(Tagg tag) {
-		this.tag = tag;
+	public void setTag(Tagg tagg) {
+		this.tagg = tagg;
+	}
+
+	@Override
+	public String toString() {
+		return "Topic [idTopic=" + idTopic + ", codeTopic=" + codeTopic + ", titleTopic=" + titleTopic + ",tag ="+tagg.toString()+", descrTopic=" + descrTopic + "]";
 	}
 
 }

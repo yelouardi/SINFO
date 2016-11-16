@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,6 +17,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name="tagg")
 public class Tagg implements Serializable {
 
+	public Tagg() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	/**
 	 * 
 	 */
@@ -27,7 +33,7 @@ public class Tagg implements Serializable {
 	
 	private String titleTag;
 	
-	@OneToMany(mappedBy="tag")
+	@OneToMany(mappedBy="tagg",fetch = FetchType.LAZY )
 	private List<Topic> topics;
 
 	public Tagg(String codeTag) {
@@ -57,6 +63,11 @@ public class Tagg implements Serializable {
 
 	public void setTopics(List<Topic> topics) {
 		this.topics = topics;
+	}
+
+	@Override
+	public String toString() {
+		return "Tagg [codeTag=" + codeTag + ", titleTag=" + titleTag +"]";
 	}
 	
 	

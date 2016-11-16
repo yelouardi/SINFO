@@ -36,5 +36,10 @@ public class SinfoApplication implements CommandLineRunner  {
 			
 		}
 		
+		List<Topic> listTopic = topicService.getListTopic();
+		for (Topic topic : listTopic) {
+			System.out.println(topic.toString());
+		}
+		
 	}
 }
