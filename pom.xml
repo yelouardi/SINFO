@@ -49,6 +49,40 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-jcl</artifactId>
+			<version>2.5</version>
+		</dependency>
+		<dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.2.2</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.2.2</version>
+            <scope>compile</scope>
+        </dependency>
 	</dependencies>
 
 	<build>
@@ -64,15 +98,15 @@
 			<id>dev</id>
 			<build>
 				<plugins>
-							<plugin>
-								<groupId>org.apache.tomcat.maven</groupId>
-								<artifactId>tomcat7-maven-plugin</artifactId>
-								<version>2.2</version>
-								<configuration>
-									<url>http://localhost:8091/manager/text</url>
-									<server>TomcatLocalServer</server>
-									<path>/SINFO</path>
-								</configuration>
+					<plugin>
+						<groupId>org.apache.tomcat.maven</groupId>
+						<artifactId>tomcat7-maven-plugin</artifactId>
+						<version>2.2</version>
+						<configuration>
+							<url>http://localhost:8091/manager/text</url>
+							<server>TomcatLocalServer</server>
+							<path>/SINFO</path>
+						</configuration>
 					</plugin>
 				</plugins>
 			</build>

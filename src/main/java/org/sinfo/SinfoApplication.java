@@ -1,45 +1,47 @@
 package org.sinfo;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.sinfo.entity.Topic;
-import org.sinfo.service.TopicService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
-@SpringBootApplication
-public class SinfoApplication implements CommandLineRunner  {
+import com.google.common.base.Predicate;
 
-	List<String> Tags =Arrays.asList("OSGI","JPA","HIBERNAT","JSF","STRUTS","AOK","SLING","DOZER","FELIX","SPRING DATA");
-	@Autowired
-	TopicService topicService;
+import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+@EnableSwagger2	
+@SpringBootApplication	
+public class SinfoApplication 	{
 	public static void main(String[] args) {
 		SpringApplication.run(SinfoApplication.class, args);
 	}
+	
+	 @Bean
+	    public Docket newsApi() {
+	        return new Docket(DocumentationType.SWAGGER_2)
+	                .groupName("topic")
+	                .apiInfo(apiInfo())
+	                .select()
+	                .paths(new Predicate<String>() {
+	                    @Override 
+	                    public boolean apply(String str) {
+	                        return str.matches("/topics.*");
+	                    }               
+	            })
+	                .build();
+	    }
+	     
+		private ApiInfo apiInfo() {
+	        return new ApiInfoBuilder()
+	                .title("SINFO Project  REST Sample with Swagger")
+	                .description("SINFO Project  REST Sample with Swagger")
+	                .termsOfServiceUrl("http://www-03.ibm.com/software/sla/sladb.nsf/sla/bm?Open")
+	                .contact("Yassine EL OUARDI : ing.elouardi@gmail.com")
+	                .version("2.0")
+	                .build();
+	    }	
 
-
-
-	@Override
-	public void run(String... args) throws Exception {
-		for (String tag : Tags) {
-			Topic topic=new Topic();
-			topic.setTitleTopic("Topic - "+tag.toLowerCase());
-			topic.setDescrTopic(tag.toLowerCase()+" =>> give a digital high-five");
-			try {
-				topicService.addTopic(topic, tag);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			
-		}
-		
-		List<Topic> listTopic = topicService.getListTopic();
-		for (Topic topic : listTopic) {
-			System.out.println(topic.toString());
-		}
-		
-	}
+	
 }
