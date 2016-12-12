@@ -4,10 +4,6 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import org.apache.log4j.Level;
-import org.apache.log4j.Priority;
-import org.sinfo.business.service.impl.TagBSImpl;
 /**
  * 
  * @author yelouardi

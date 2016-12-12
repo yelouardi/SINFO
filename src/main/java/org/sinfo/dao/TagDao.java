@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.sinfo.annotation.Loggable;
 import org.sinfo.annotation.Loggable.level;
-import org.sinfo.business.service.impl.TopicBSImpl;
 import org.sinfo.entity.Tagg;
 import org.sinfo.entity.Topic;
 import org.springframework.data.jpa.repository.JpaRepository;

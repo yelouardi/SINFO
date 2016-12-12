@@ -13,13 +13,16 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+/**
+ * @author yelouardi
+ * Tagg
+ */
 @Entity
 @Table(name="tagg")
 public class Tagg implements Serializable {
 
 	public Tagg() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**

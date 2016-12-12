@@ -1,7 +1,6 @@
 package org.sinfo.aop;
 
 import java.util.Arrays;
-
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
@@ -12,7 +11,6 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.sinfo.annotation.Loggable;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**

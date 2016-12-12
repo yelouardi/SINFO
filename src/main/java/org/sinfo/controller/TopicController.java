@@ -1,7 +1,6 @@
 package org.sinfo.controller;
 
 import java.util.List;
-
 import org.sinfo.annotation.Loggable;
 import org.sinfo.annotation.Loggable.level;
 import org.sinfo.entity.Topic;

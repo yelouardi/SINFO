@@ -2,6 +2,10 @@ package org.sinfo.entity;
 
 import java.util.List;
 
+/**
+ * @author yelouardi
+ * TopicPage
+ */
 public class TopicPage {
 	
 	private int number;
