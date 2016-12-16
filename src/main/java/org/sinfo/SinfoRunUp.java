@@ -14,7 +14,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 
 //@SpringBootApplication	
-public class SinfoRunUp implements CommandLineRunner 	{
+public class SinfoRunUp 	{/**
 	private final static Logger LOGGER=Logger.getLogger(SinfoRunUp.class);
 	// implements CommandLineRunner 
 	List<String> Tags =Arrays.asList("Osgi","Jpa","Hibernat","Jsf","Struts","Aok","Sling","Dozer","Felix","Spring", "PoolManagerHttp");
@@ -62,5 +62,5 @@ public class SinfoRunUp implements CommandLineRunner 	{
 		userdao.save(new User("yelouardi1","yassine@1986",role));
 
 		
-	}
+	}**/
 }
