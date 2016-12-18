@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "use.redis.session.store",
+  "type": "java.lang.String",
+  "description": "Stock Session in REDIS  'use.redis.session.store'"
+}]}

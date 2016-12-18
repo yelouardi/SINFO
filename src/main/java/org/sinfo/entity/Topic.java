@@ -38,6 +38,9 @@ public class Topic implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "codeTag")
 	private Tagg tagg;
+	@ManyToOne
+	@JoinColumn(name = "idUser")
+	private User user;
 	@Lob
 	private String descrTopic;
 
@@ -81,9 +84,13 @@ public class Topic implements Serializable {
 		this.tagg = tagg;
 	}
 
-	@Override
-	public String toString() {
-		return "Topic [idTopic=" + idTopic + ", codeTopic=" + codeTopic + ", titleTopic=" + titleTopic + ",tag ="+tagg.toString()+", descrTopic=" + descrTopic + "]";
+	public User getUser() {
+		return user;
 	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 
 }

@@ -1,5 +1,6 @@
 package org.sinfo.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -20,8 +21,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Entity
 @Table(name = "role")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})	
-public class Role {
+public class Role implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8870297207988537917L;
 	public Role() {
 	}
 	public Role(String nameRole) {
