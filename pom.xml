@@ -135,7 +135,7 @@
 						<configuration>
 							<url>http://localhost:8087/manager/text</url>
 							<server>TomcatServer</server>
-							<path>/${project.artifactId}</path>
+							<path>/sinfo</path>
 							<username>admin</username>
         						<password>admin</password>  
 							<update>true</update>
