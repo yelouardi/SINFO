@@ -141,8 +141,8 @@
 						<artifactId>tomcat-maven-plugin</artifactId>
 						<configuration>
 							<urls>
-							<url>http://loxalhost:8087/manager/text</url>
-							<url>http://loxalhost:8088/manager/text</url>
+							<url>http://localhost:8087/manager/text</url>
+							<url>http://localhost:8088/manager/text</url>
 							</urls>
 							<server>TomcatServer</server>
 							<path>/SINFO</path>
