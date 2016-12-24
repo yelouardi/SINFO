@@ -141,7 +141,7 @@
 						<artifactId>tomcat-maven-plugin</artifactId>
 						<configuration>
 							<url>http://localhost:8087/manager/text</url>
-							<path>/SINFO</path>
+							<path>/${project.artifactId}</path>
 							<username>admin</username>
         						<password>admin</password>  
 						</configuration>
