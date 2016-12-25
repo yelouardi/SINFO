@@ -61,7 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint())
 		.and().addFilterBefore(authenticationFilter(), CustomUsernamePasswordAuthenticationFilter.class)
-		.csrf().disable().authorizeRequests().antMatchers("/V2/**").permitAll().antMatchers("/topics/**").authenticated().and().formLogin()
+		.csrf().disable().authorizeRequests().antMatchers("/v2/**").permitAll().antMatchers("/topics/**").authenticated().and().formLogin()
 		.loginProcessingUrl(AUTHENTICATE_ENDPOINT).failureHandler(authenticationFailureHandler())
 		.successHandler(authenticationSuccessHandler()).and().logout();
     }
