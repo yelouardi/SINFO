@@ -134,7 +134,7 @@
 						<artifactId>tomcat-maven-plugin</artifactId>
 						<configuration>
 							<mode>war</mode>
-							<url>http://localhost:8088/manager/html</url>
+							<url>http://10.5.0.5:8087/manager/html</url>
 							<server>TomcatServer</server>
 							<path>/sinfo</path>
 							<update>true</update>
