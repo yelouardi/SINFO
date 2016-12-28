@@ -12,7 +12,6 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-import org.springframework.session.ExpiringSession;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.session.web.http.SessionRepositoryFilter;
 import org.springframework.web.filter.DelegatingFilterProxy;
@@ -43,8 +42,10 @@ public class RedisSessionConfig {
 	    return template;
 	  }
 	  	
-	 @Bean
-	 public JedisConnectionFactory connectionFactory() {
-	  return new JedisConnectionFactory();
-	 }
+	  @Bean
+	  public JedisConnectionFactory connectionFactory() {
+	      JedisConnectionFactory connection = new JedisConnectionFactory();
+	      connection.setHostName("redis");
+	      return connection;
+	    }
 }	
