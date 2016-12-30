@@ -7,16 +7,21 @@ import org.sinfo.security.auth.handler.AuthenticationSuccessHandler;
 import org.sinfo.security.auth.handler.RestAuthenticationEntryPoint;
 import org.sinfo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.session.web.http.HeaderHttpSessionStrategy;
+import org.springframework.session.web.http.HttpSessionStrategy;
 
 /**
  * @author yelouardi
  * SecurityConfig
  */
+@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final static String AUTHENTICATE_ENDPOINT = "/authenticate";
@@ -63,11 +68,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.and().addFilterBefore(authenticationFilter(), CustomUsernamePasswordAuthenticationFilter.class)
 		.csrf().disable().authorizeRequests().antMatchers("/v2/**").permitAll().antMatchers(AUTHENTICATE_ENDPOINT).permitAll().antMatchers("/topics/**").authenticated().and().formLogin()
 		.loginProcessingUrl(AUTHENTICATE_ENDPOINT).failureHandler(authenticationFailureHandler())
-		.successHandler(authenticationSuccessHandler()).and().logout();
+		.successHandler(authenticationSuccessHandler()).and().logout().logoutUrl("/logout")
+        .deleteCookies("JSESSIONID");
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(authService());
+    }
+    @Bean
+    public HttpSessionStrategy httpSessionStrategy() {
+        return new HeaderHttpSessionStrategy();
     }
 }			
