@@ -10,6 +10,7 @@ public class UserDto {
 	private String userName;
 	private String password;
 	private List<String> authorities;
+	private String token;
 	private Long userNo;
 	public Long getUserNo() {
 		return userNo;
@@ -35,12 +36,20 @@ public class UserDto {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
+	}
 	public UserDto(String userName, String password) {
 		super();
 		this.userName = userName;
 		this.password = password;
 	}
-	public UserDto(Long userNo, String username, List<String> authorities) {
+	public UserDto(String token, Long userNo, String username, List<String> authorities) {
+		this.token=token;
 		this.userNo=userNo;
 		this.userName=username;
 		this.authorities=authorities;

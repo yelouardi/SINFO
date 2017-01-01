@@ -24,7 +24,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 		ObjectMapper mapper = new ObjectMapper();
 		PrintWriter writer = response.getWriter();
 
-		UserDto userDto = new UserDto(userSecurity.getUserNo(), userSecurity.getUsername(), userSecurity.getAuthorities().stream().map(x -> x.getAuthority()).collect(Collectors.toList()));
+		UserDto userDto = new UserDto(response.getHeader("X-Token"),userSecurity.getUserNo(), userSecurity.getUsername(), userSecurity.getAuthorities().stream().map(x -> x.getAuthority()).collect(Collectors.toList()));
 
 		mapper.writeValue(writer, userDto);
 		writer.flush();
