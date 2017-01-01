@@ -1,6 +1,7 @@
 package org.sinfo.service;
 
 import org.sinfo.entity.User;
+import org.sinfo.security.auth.dto.UserDto;
 
 public interface UserService {
 
@@ -21,6 +22,11 @@ public interface UserService {
 	 * @return
 	 */
 	public User getUserByName(String username);
+	
+	public void autologin(String username, String password);
+	
+	public UserDto getLoggedUser() ;
+
 
 	
 }
