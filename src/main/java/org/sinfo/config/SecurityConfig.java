@@ -1,83 +1,42 @@
 package org.sinfo.config;
 
-import org.sinfo.security.auth.AuthService;
-import org.sinfo.security.auth.filter.CustomUsernamePasswordAuthenticationFilter;
-import org.sinfo.security.auth.handler.AuthenticationFailureHandler;
-import org.sinfo.security.auth.handler.AuthenticationSuccessHandler;
-import org.sinfo.security.auth.handler.RestAuthenticationEntryPoint;
-import org.sinfo.service.UserService;
+import org.sinfo.security.auth.CustomerAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.session.web.http.HeaderHttpSessionStrategy;
-import org.springframework.session.web.http.HttpSessionStrategy;
 
 /**
- * @author yelouardi
- * SecurityConfig
+ * @author yelouardi SecurityConfig
  */
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
+@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
-    private final static String AUTHENTICATE_ENDPOINT = "/authenticate";
-
 	@Autowired
-	UserService userService;	
-    // Beans connected with translating input and output to JSON
-    @Bean
-    AuthenticationFailureHandler authenticationFailureHandler() {
-        return new AuthenticationFailureHandler();
-    }
-
-    @Bean
-    AuthenticationSuccessHandler authenticationSuccessHandler() {
-        return new AuthenticationSuccessHandler();
-    }
-
-    @Bean
-    RestAuthenticationEntryPoint restAuthenticationEntryPoint() {
-        return new RestAuthenticationEntryPoint();
-    }
-
-    // Bean responsible for getting information about user details
-    @Bean
-    AuthService authService() {
-        return new AuthService(userService);
-    }
+	private CustomerAuthService userService;
 	
-    @Bean
-    public CustomUsernamePasswordAuthenticationFilter authenticationFilter() throws Exception {
-        CustomUsernamePasswordAuthenticationFilter authFilter = new CustomUsernamePasswordAuthenticationFilter();
-        authFilter.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher(AUTHENTICATE_ENDPOINT, "POST"));
-        authFilter.setAuthenticationManager(super.authenticationManager());
-        authFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler());
-        authFilter.setAuthenticationFailureHandler(authenticationFailureHandler());
-        authFilter.setUsernameParameter("j_username");
-        authFilter.setPasswordParameter("j_password");
-        return authFilter;
-    }
-	
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint())
-		.and().addFilterBefore(authenticationFilter(), CustomUsernamePasswordAuthenticationFilter.class)
-		.csrf().disable().authorizeRequests().antMatchers("/v2/**").permitAll().antMatchers(AUTHENTICATE_ENDPOINT).permitAll().antMatchers("/topics/**").authenticated().and().formLogin()
-		.loginProcessingUrl(AUTHENTICATE_ENDPOINT).failureHandler(authenticationFailureHandler())
-		.successHandler(authenticationSuccessHandler()).and().logout().logoutUrl("/logout")
-        .deleteCookies("JSESSIONID");
-    }
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    http
+        .authorizeRequests()
+        .antMatchers("/topics/**").hasRole("ROL_admin")
+        .and()
+        .httpBasic();
+  }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(authService());
-    }
-    @Bean
-    public HttpSessionStrategy httpSessionStrategy() {
-        return new HeaderHttpSessionStrategy();
-    }
-}			
+  @Autowired
+  public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    auth.userDetailsService(userService);
+  }
+
+  @Bean
+  public HeaderHttpSessionStrategy sessionStrategy() {
+    return new HeaderHttpSessionStrategy();
+  }
+
+}

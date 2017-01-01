@@ -3,12 +3,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.sinfo.dao.UserDao;
+import org.apache.log4j.Logger;
 import org.sinfo.entity.User;
 import org.sinfo.exception.run.UserNotFoundException;
 import org.sinfo.security.auth.bo.SecurityUser;
 import org.sinfo.security.auth.dto.UserDto;
 import org.sinfo.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,15 +17,13 @@ import org.springframework.stereotype.Service;
 
 /**
  * @author yelouardi
- * AuthService
+ * CustomerAuthService
  */
-@Service("authService")
-public class AuthService implements UserDetailsService {
+@Service("customerAuthService")
+public class CustomerAuthService implements UserDetailsService {
+	private static final Logger LOGGER=Logger.getLogger(CustomerAuthService.class);
+	@Autowired
 	UserService userService;
-	public AuthService(UserService userService) {
-		super();
-		this.userService = userService;
-	}
 
 	
 		
@@ -42,8 +41,9 @@ public class AuthService implements UserDetailsService {
 	};
 
 	public UserDto getLoggedUser() {
-		SecurityUser securityUser = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return new UserDto(securityUser.getUserNo(), securityUser.getUsername(), securityUser.getAuthorities().stream().map(x -> x.getAuthority()).collect(Collectors.toList()));
+		SecurityUser securityUser = (SecurityUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		LOGGER.info("SECURITY USER : "+securityUser.toString());
+		return new UserDto(securityUser.getUsername(), securityUser.getAuthorities().stream().map(x -> x.getAuthority()).collect(Collectors.toList()));
 	};
 
 }
