@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
  * @author yelouardi
  * CustomerAuthService
  */
-@Service
+@Service("customerAuthService")
 public class CustomerAuthService implements UserDetailsService {
 	UserService userService;
     @Autowired
