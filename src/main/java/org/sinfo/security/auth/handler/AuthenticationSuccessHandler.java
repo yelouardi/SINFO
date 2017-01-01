@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.log4j.Logger;
 import org.sinfo.security.auth.bo.SecurityUser;
 import org.sinfo.security.auth.dto.UserDto;
 import org.springframework.security.core.Authentication;
@@ -17,15 +19,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * AuthenticationSuccessHandler
  */
 public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
-
+private static final Logger LOGGER=Logger.getLogger(AuthenticationSuccessHandler.class);
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
 		SecurityUser userSecurity =  (SecurityUser) authentication.getPrincipal();
 		ObjectMapper mapper = new ObjectMapper();
 		PrintWriter writer = response.getWriter();
 
-		UserDto userDto = new UserDto(response.getHeader("X-Token"),userSecurity.getUserNo(), userSecurity.getUsername(), userSecurity.getAuthorities().stream().map(x -> x.getAuthority()).collect(Collectors.toList()));
-
+		UserDto userDto = new UserDto(response.getHeader("x-auth-token"),userSecurity.getUserNo(), userSecurity.getUsername(), userSecurity.getAuthorities().stream().map(x -> x.getAuthority()).collect(Collectors.toList()));
+		LOGGER.info("------------>>  HEADER :"+response.getHeaderNames());
 		mapper.writeValue(writer, userDto);
 		writer.flush();
 	}
