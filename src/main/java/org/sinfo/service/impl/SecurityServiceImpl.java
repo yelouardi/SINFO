@@ -3,6 +3,7 @@ package org.sinfo.service.impl;
 import org.apache.log4j.Logger;
 import org.sinfo.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,12 +16,13 @@ public class SecurityServiceImpl implements SecurityService{
     
     private final AuthenticationManager authenticationManager;
 
-    private final UserDetailsService userDetailsService;
+    @Qualifier("customerAuthService")
+    @Autowired
+    private  UserDetailsService userDetailsService;
 
     @Autowired
-    public SecurityServiceImpl(AuthenticationManager authenticationManager, UserDetailsService userDetailsService) {
+    public SecurityServiceImpl(AuthenticationManager authenticationManager) {
 		this.authenticationManager = authenticationManager;
-		this.userDetailsService = userDetailsService;
 	}
 
 	private static final Logger logger = Logger.getLogger(SecurityServiceImpl.class);
