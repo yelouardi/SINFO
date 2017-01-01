@@ -22,11 +22,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http
-        .authorizeRequests()
-        .antMatchers("/topics/**").hasRole("ROL_admin")
-        .and()
-        .httpBasic();
+	  http
+	    .csrf().disable()
+	    .authorizeRequests()
+	        .antMatchers("/login","/login/form**","/register","/logout").permitAll()
+	        .antMatchers("/admin","/admin/**").hasRole("ROL_admin")
+	        .anyRequest().authenticated()
+	        .and()
+	    .formLogin()
+	        .loginPage("/login/form")
+	        .loginProcessingUrl("/login")
+	        .failureUrl("/login/form?error")
+	        .permitAll();
   }
 
   @Autowired
