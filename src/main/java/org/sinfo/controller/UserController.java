@@ -1,18 +1,14 @@
 package org.sinfo.controller;
 
-import java.security.Principal;
-
 import javax.servlet.http.HttpSession;
 
 import org.sinfo.security.auth.CustomerAuthService;
 import org.sinfo.security.auth.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,12 +22,10 @@ public class UserController {
     @Autowired
     private CustomerAuthService authService;
 
-    @RequestMapping(value="/login", method = RequestMethod.GET)
-    public String printUser(ModelMap model, Principal principal) {
-        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String name = user.getUsername(); //get logged in username
-        model.addAttribute("username", name);
-        return name;
+    @RequestMapping(value="/login", method = RequestMethod.POST)
+    public String login(@RequestParam("email")String email,@RequestParam("password")String password) {
+    	authService.autologin(email, password);
+        return "hello";
 
     }
     @RequestMapping(value = "/user", method = RequestMethod.GET)

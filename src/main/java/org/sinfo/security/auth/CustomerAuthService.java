@@ -10,8 +10,11 @@ import org.sinfo.security.auth.bo.SecurityUser;
 import org.sinfo.security.auth.dto.UserDto;
 import org.sinfo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +27,12 @@ public class CustomerAuthService implements UserDetailsService {
 	private static final Logger LOGGER=Logger.getLogger(CustomerAuthService.class);
 	@Autowired
 	UserService userService;
+	
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
 
 	
 		
@@ -38,12 +47,22 @@ public class CustomerAuthService implements UserDetailsService {
 		}catch(Exception ex){
 			throw new UserNotFoundException(String.format(username));
 		}
-	};
+	}
+	
+	public void autologin(String username, String password) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
+        authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+        if (usernamePasswordAuthenticationToken.isAuthenticated()) {
+            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+            LOGGER.debug(String.format("Auto login %s successfully!", username));
+        }
+    }
 
 	public UserDto getLoggedUser() {
 		SecurityUser securityUser = (SecurityUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		LOGGER.info("SECURITY USER : "+securityUser.toString());
 		return new UserDto(securityUser.getUsername(), securityUser.getAuthorities().stream().map(x -> x.getAuthority()).collect(Collectors.toList()));
-	};
+	}
 
 }
