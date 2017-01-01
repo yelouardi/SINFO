@@ -25,7 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	  http
 	    .csrf().disable()
 	    .authorizeRequests()
-	        .antMatchers("/login","/register","/logout").permitAll()
+	        .antMatchers("/login","/register","/logout","/j_spring_security_check").permitAll()
 	        .antMatchers("/topics","/topics/**","/admin","/admin/**").hasRole("ROL_admin")
 	        .anyRequest().authenticated();
 	        
