@@ -19,7 +19,6 @@ public class SecurityServiceImpl implements SecurityService{
 
     @Autowired
     public SecurityServiceImpl(AuthenticationManager authenticationManager, UserDetailsService userDetailsService) {
-		super();
 		this.authenticationManager = authenticationManager;
 		this.userDetailsService = userDetailsService;
 	}

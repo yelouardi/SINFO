@@ -27,7 +27,6 @@ public class UserController {
     
     @Autowired
     public UserController(UserService userService, SecurityService securityService) {
-		super();
 		this.userService = userService;
 		this.securityService = securityService;
 	}
