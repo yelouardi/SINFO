@@ -6,6 +6,7 @@ import org.sinfo.entity.User;
 import org.sinfo.exception.run.UserNotFoundException;
 import org.sinfo.security.auth.bo.SecurityUser;
 import org.sinfo.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
@@ -17,8 +18,8 @@ import org.springframework.stereotype.Service;
 @Service("customerAuthService")
 public class CustomerAuthService implements UserDetailsService {
 	UserService userService;
+    @Autowired
 	public CustomerAuthService(UserService userService) {
-		super();
 		this.userService = userService;
 	}
 

@@ -3,6 +3,7 @@ package org.sinfo.controller;
 import javax.servlet.http.HttpSession;
 
 import org.sinfo.security.auth.dto.UserDto;
+import org.sinfo.service.SecurityService;
 import org.sinfo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,12 +20,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserController {
     
+    
+    private final UserService userService;
+    
+    private final SecurityService securityService;
+    
     @Autowired
-    private UserService userService;
-
-    @RequestMapping(value="/login", method = RequestMethod.POST)
+    public UserController(UserService userService, SecurityService securityService) {
+		super();
+		this.userService = userService;
+		this.securityService = securityService;
+	}
+	@RequestMapping(value="/login", method = RequestMethod.POST)
     public String login(@RequestParam("email")String email,@RequestParam("password")String password) {
-    	userService.autologin(email, password);
+    	securityService.autologin(email, password);
         return "hello";
 
     }

@@ -3,6 +3,8 @@ package org.sinfo.config;
 import org.sinfo.security.auth.CustomerAuthService;
 import org.sinfo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -12,11 +14,15 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
  * @author yelouardi SecurityConfig
  */
 @EnableWebSecurity
+@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-	UserService userService;
-
+    private final CustomerAuthService customerAuthService;
+    @Autowired
+    public SecurityConfig(CustomerAuthService customerAuthService) {
+  		super();
+  		this.customerAuthService = customerAuthService;
+  	}
 	
   @Override
   protected void configure(HttpSecurity http) throws Exception {
@@ -29,9 +35,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	        
   }
 
-  @Autowired
+
+
+@Autowired
   public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-    auth.userDetailsService(new CustomerAuthService(userService));
+    auth.userDetailsService(customerAuthService);
   }
 
 

@@ -23,7 +23,6 @@ public interface UserService {
 	 */
 	public User getUserByName(String username);
 	
-	public void autologin(String username, String password);
 	
 	public UserDto getLoggedUser() ;
 
