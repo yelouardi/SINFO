@@ -1,54 +1,82 @@
 package org.sinfo.config;
 
-import org.sinfo.security.auth.CustomerAuthService;
+import org.sinfo.security.auth.AuthService;
+import org.sinfo.security.auth.filter.CustomUsernamePasswordAuthenticationFilter;
+import org.sinfo.security.auth.handler.AuthenticationFailureHandler;
+import org.sinfo.security.auth.handler.AuthenticationSuccessHandler;
+import org.sinfo.security.auth.handler.RestAuthenticationEntryPoint;
+import org.sinfo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.session.web.http.HeaderHttpSessionStrategy;
 import org.springframework.session.web.http.HttpSessionStrategy;
 
 /**
- * @author yelouardi SecurityConfig
+ * @author yelouardi
+ * SecurityConfig
  */
-@EnableWebSecurity
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    @Qualifier("customerAuthService")
-    CustomerAuthService customerAuthService;
+    private final static String AUTHENTICATE_ENDPOINT = "/authenticate";
 
+	@Autowired
+	UserService userService;	
+    // Beans connected with translating input and output to JSON
+    @Bean
+    AuthenticationFailureHandler authenticationFailureHandler() {
+        return new AuthenticationFailureHandler();
+    }
+
+    @Bean
+    AuthenticationSuccessHandler authenticationSuccessHandler() {
+        return new AuthenticationSuccessHandler();
+    }
+
+    @Bean
+    RestAuthenticationEntryPoint restAuthenticationEntryPoint() {
+        return new RestAuthenticationEntryPoint();
+    }
+
+    // Bean responsible for getting information about user details
+    @Bean
+    AuthService authService() {
+        return new AuthService(userService);
+    }
 	
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
-//	  http
-//	    .csrf().disable()
-//	    .authorizeRequests()
-//	        .antMatchers("/login","/register","/logout").permitAll()
-//	        .antMatchers("/topics","/topics/**","/admin","/admin/**").hasRole("ROL_admin")
-//	        .anyRequest().authenticated();
-	  
-      http
+    @Bean
+    public CustomUsernamePasswordAuthenticationFilter authenticationFilter() throws Exception {
+        CustomUsernamePasswordAuthenticationFilter authFilter = new CustomUsernamePasswordAuthenticationFilter();
+        authFilter.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher(AUTHENTICATE_ENDPOINT, "POST"));
+        authFilter.setAuthenticationManager(super.authenticationManager());
+        authFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler());
+        authFilter.setAuthenticationFailureHandler(authenticationFailureHandler());
+        authFilter.setUsernameParameter("j_username");
+        authFilter.setPasswordParameter("j_password");
+        return authFilter;
+    }
+	
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint())
+		.and().addFilterBefore(authenticationFilter(), CustomUsernamePasswordAuthenticationFilter.class)
 		.csrf().disable().authorizeRequests().antMatchers("/**").authenticated().and().formLogin()
-		.loginProcessingUrl("/login").and().logout();
-	        
-  }
+		.loginProcessingUrl(AUTHENTICATE_ENDPOINT).failureHandler(authenticationFailureHandler())
+		.successHandler(authenticationSuccessHandler()).and().logout();
+    }
 
-  @Autowired
-  public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-    auth.userDetailsService(customerAuthService);
-  }
-
-  
-  @Bean
-  public HttpSessionStrategy httpSessionStrategy() {
-      return new HeaderHttpSessionStrategy();
-  }
-
-}
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(authService());
+    }
+    @Bean
+    public HttpSessionStrategy httpSessionStrategy() {
+        return new HeaderHttpSessionStrategy();
+    }
+}			

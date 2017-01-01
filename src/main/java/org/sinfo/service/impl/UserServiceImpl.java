@@ -1,17 +1,11 @@
 package org.sinfo.service.impl;
 
-import java.util.stream.Collectors;
-
-import org.apache.log4j.Logger;
 import org.sinfo.annotation.Loggable;
 import org.sinfo.annotation.Loggable.level;
 import org.sinfo.business.service.UserBS;
 import org.sinfo.entity.User;
-import org.sinfo.security.auth.bo.SecurityUser;
-import org.sinfo.security.auth.dto.UserDto;
 import org.sinfo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 /** Service Business Topic
@@ -20,9 +14,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class UserServiceImpl implements UserService	 {
-	
-	private static final Logger LOGGER=Logger.getLogger(UserService.class);
-
 	@Autowired
 	UserBS userBS;
 	
@@ -54,13 +45,6 @@ public class UserServiceImpl implements UserService	 {
 		return userBS.getUserByName(username);
 	}
 
-
-	@Override
-	public UserDto getLoggedUser() {
-		SecurityUser securityUser = (SecurityUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		LOGGER.info("SECURITY USER : "+securityUser.toString());
-		return new UserDto(securityUser.getUsername(), securityUser.getAuthorities().stream().map(x -> x.getAuthority()).collect(Collectors.toList()));
-	}
 
 
 }	

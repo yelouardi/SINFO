@@ -10,7 +10,13 @@ public class UserDto {
 	private String userName;
 	private String password;
 	private List<String> authorities;
-
+	private Long userNo;
+	public Long getUserNo() {
+		return userNo;
+	}
+	public void setUserNo(Long userNo) {
+		this.userNo = userNo;
+	}
 	public String getUserName() {
 		return userName;
 	}
@@ -34,7 +40,8 @@ public class UserDto {
 		this.userName = userName;
 		this.password = password;
 	}
-	public UserDto(String username, List<String> authorities) {
+	public UserDto(Long userNo, String username, List<String> authorities) {
+		this.userNo=userNo;
 		this.userName=username;
 		this.authorities=authorities;
 	}
