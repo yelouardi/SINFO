@@ -25,15 +25,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	  http
 	    .csrf().disable()
 	    .authorizeRequests()
-	        .antMatchers("/login","/login/form**","/register","/logout").permitAll()
-	        .antMatchers("/admin","/admin/**").hasRole("ROL_admin")
-	        .anyRequest().authenticated()
-	        .and()
-	    .formLogin()
-	        .loginPage("/login/form")
-	        .loginProcessingUrl("/login")
-	        .failureUrl("/login/form?error")
-	        .permitAll();
+	        .antMatchers("/login","/register","/logout").permitAll()
+	        .antMatchers("/topics","/topics/**","/admin","/admin/**").hasRole("ROL_admin")
+	        .anyRequest().authenticated();
+	        
   }
 
   @Autowired
