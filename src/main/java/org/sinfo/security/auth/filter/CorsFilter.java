@@ -1,6 +1,8 @@
 package org.sinfo.security.auth.filter;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -27,6 +29,10 @@ private final static Logger LOGGER= Logger.getLogger(CorsFilter.class);
     response.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE");
     response.setHeader("Access-Control-Max-Age", "3600");
     response.setHeader("Access-Control-Allow-Headers", "x-auth-token, x-requested-with");
+    Map<String,String[]> params = req.getParameterMap();
+    for (Entry<String, String[]> param : params.entrySet()) {
+    	LOGGER.info("PARAM  AuthenticationTokenFilter ====>> "+param.getKey()+":"+param.getValue());
+	}
     if (request.getMethod()!="OPTIONS") {
       try {
 		chain.doFilter(req, res);
