@@ -25,8 +25,7 @@ private static final Logger LOGGER=Logger.getLogger(AuthenticationSuccessHandler
 		SecurityUser userSecurity =  (SecurityUser) authentication.getPrincipal();
 		ObjectMapper mapper = new ObjectMapper();
 		PrintWriter writer = response.getWriter();
-
-		UserDto userDto = new UserDto(request.getHeader("x-auth-token"),userSecurity.getUserNo(), userSecurity.getUsername(), userSecurity.getAuthorities().stream().map(x -> x.getAuthority()).collect(Collectors.toList()));
+		UserDto userDto = new UserDto(request.getSession(false).getId(),userSecurity.getUserNo(), userSecurity.getUsername(), userSecurity.getAuthorities().stream().map(x -> x.getAuthority()).collect(Collectors.toList()));
 		LOGGER.info("------------>>  HEADER :"+userSecurity.toString());
 		mapper.writeValue(writer, userDto);
 		writer.flush();
