@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.sinfo.security.auth.AuthService;
 import org.sinfo.security.auth.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +24,8 @@ public class UserController {
     private AuthService authService;
 
     @RequestMapping("/user")
+    @CrossOrigin(origins = "*", maxAge = 3600,
+    allowedHeaders={"x-auth-token", "x-requested-with"})
     public UserDto getUser() {
         return authService.getLoggedUser();
     }
