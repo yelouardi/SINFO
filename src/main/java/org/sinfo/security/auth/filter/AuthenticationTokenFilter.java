@@ -30,7 +30,10 @@ public void init(FilterConfig fc) throws ServletException {
 public void doFilter(ServletRequest req, ServletResponse res, FilterChain fc) throws IOException, ServletException {
     SecurityContext context = SecurityContextHolder.getContext();
     if (context.getAuthentication() != null && context.getAuthentication().isAuthenticated()) {
-        // do nothing
+    	Map<String,String[]> params = req.getParameterMap();
+        for (Entry<String, String[]> param : params.entrySet()) {
+        	logger.info("PARAM  AuthenticationTokenFilter ====>> "+param.getKey()+":"+param.getValue());
+		}
     } else {
         Map<String,String[]> params = req.getParameterMap();
         for (Entry<String, String[]> param : params.entrySet()) {
