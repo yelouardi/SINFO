@@ -74,8 +74,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class).authorizeRequests().antMatchers("/token")
 		.permitAll().antMatchers("/**").authenticated()
 		.and()
-		.csrf().csrfTokenRepository(csrfTokenRepository())
-		.and()
 		.formLogin()
 		.loginProcessingUrl(AUTHENTICATE_ENDPOINT).failureHandler(authenticationFailureHandler())
 		.successHandler(authenticationSuccessHandler())
@@ -91,9 +89,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new HeaderHttpSessionStrategy();
     }
     
-    private CsrfTokenRepository csrfTokenRepository() {
-    	  HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
-    	  repository.setHeaderName("X-XSRF-TOKEN");
-    	  return repository;
-    	}
 }			
