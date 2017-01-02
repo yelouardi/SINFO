@@ -67,7 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.httpBasic().and().exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint())
 		.and().csrf().disable()
 		.addFilterBefore(authenticationFilter(), CustomUsernamePasswordAuthenticationFilter.class)
-	    .authorizeRequests().antMatchers("/token").permitAll().antMatchers("/**").authenticated()
+	    .authorizeRequests().antMatchers("/**").permitAll().antMatchers("/user").authenticated()
 		.and().formLogin()
 		.loginProcessingUrl(AUTHENTICATE_ENDPOINT).failureHandler(authenticationFailureHandler())
 		.successHandler(authenticationSuccessHandler()).and().logout();

@@ -13,8 +13,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.log4j.Logger;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -22,7 +20,6 @@ import org.springframework.stereotype.Component;
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 class CorsFilter implements Filter {
-private final static Logger LOGGER= Logger.getLogger(CorsFilter.class);
   public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) {
     HttpServletResponse response = (HttpServletResponse) res;
     HttpServletRequest request = (HttpServletRequest) req;
@@ -30,10 +27,7 @@ private final static Logger LOGGER= Logger.getLogger(CorsFilter.class);
     response.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE");
     response.setHeader("Access-Control-Max-Age", "3600");
     response.setHeader("Access-Control-Allow-Headers", "x-auth-token, x-requested-with");
-    Collection<String> params = response.getHeaderNames();
-    for (String param : params) {
-    	LOGGER.info("PARAM  AuthenticationTokenFilter ====>> "+param);
-	}
+    response.setHeader("SESSION ID ",  request.getSession().getId());
     if (request.getMethod()!="OPTIONS") {
       try {
 		chain.doFilter(req, res);
