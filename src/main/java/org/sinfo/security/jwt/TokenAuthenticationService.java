@@ -27,8 +27,11 @@ public class TokenAuthenticationService {
             .compact();
         response.addHeader(headerString, tokenPrefix + " " + JWT);
       //Service code
-        Cookie myJwt = new Cookie("jwt", JWT);
-        response.addCookie(myJwt);
+        Cookie cookie = new Cookie("jwt", JWT);
+        cookie.setMaxAge(Long.signum(EXPIRATIONTIME));
+        cookie.setPath("/");
+        cookie.setSecure(false);
+        response.addCookie(cookie);
     }
 
     public Authentication getAuthentication(HttpServletRequest request) {
