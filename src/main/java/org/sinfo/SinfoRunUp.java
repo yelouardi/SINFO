@@ -1,8 +1,6 @@
 package org.sinfo;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-@SpringBootApplication
+//@SpringBootApplication
 public class SinfoRunUp {
 
     /**
