@@ -109,6 +109,11 @@
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.6.0</version>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-redis</artifactId>
 		</dependency>
@@ -133,21 +138,21 @@
 		</plugins>
 	</build>
 
-<profiles>
+	<profiles>
 		<profile>
 			<id>deployTomcat2</id>
 			<build>
 				<plugins>
 					<plugin>
-     				 <groupId>org.apache.tomcat.maven</groupId>
-     				<artifactId>tomcat7-maven-plugin</artifactId>
-     				 <version>2.2</version>
+						<groupId>org.apache.tomcat.maven</groupId>
+						<artifactId>tomcat7-maven-plugin</artifactId>
+						<version>2.2</version>
 						<configuration>
 							<url>http://10.5.0.6:8080/manager/text</url>
 							<server>TomcatServer</server>
 							<path>/sinfo</path>
-			     				 <username>admin</username>
-			     				 <password>admin</password>
+							<username>admin</username>
+							<password>admin</password>
 							<update>true</update>
 						</configuration>
 					</plugin>
@@ -159,15 +164,15 @@
 			<build>
 				<plugins>
 					<plugin>
-     				 <groupId>org.apache.tomcat.maven</groupId>
-     				<artifactId>tomcat7-maven-plugin</artifactId>
-     				 <version>2.2</version>
+						<groupId>org.apache.tomcat.maven</groupId>
+						<artifactId>tomcat7-maven-plugin</artifactId>
+						<version>2.2</version>
 						<configuration>
 							<url>http://10.5.0.5:8080/manager/text</url>
 							<server>TomcatServer</server>
 							<path>/sinfo</path>
-			     				 <username>admin</username>
-			     				 <password>admin</password>
+							<username>admin</username>
+							<password>admin</password>
 							<update>true</update>
 						</configuration>
 					</plugin>

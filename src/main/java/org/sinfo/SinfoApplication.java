@@ -2,7 +2,7 @@ package org.sinfo;
 
 import org.sinfo.config.MapSessionConfig;
 import org.sinfo.config.RedisSessionConfig;
-import org.sinfo.config.SecurityConfig;
+import org.sinfo.config.WebSecurityConfigJwt;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -24,7 +24,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  */
 @SpringBootApplication
 @EnableSwagger2
-@Import({SecurityConfig.class,RedisSessionConfig.class,MapSessionConfig .class})
+@Import({WebSecurityConfigJwt.class,RedisSessionConfig.class,MapSessionConfig .class})
 public class SinfoApplication extends SpringBootServletInitializer{
 	public static void main(String[] args) {
 		SpringApplication.run(SinfoApplication.class, args);
