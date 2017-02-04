@@ -2,6 +2,7 @@ package org.sinfo.security.jwt;
 
 import java.util.Date;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -25,6 +26,9 @@ public class TokenAuthenticationService {
             .signWith(SignatureAlgorithm.HS512, secret)
             .compact();
         response.addHeader(headerString, tokenPrefix + " " + JWT);
+      //Service code
+        Cookie myJwt = new Cookie("jwt", JWT);
+        response.addCookie(myJwt);
     }
 
     public Authentication getAuthentication(HttpServletRequest request) {
