@@ -1,12 +1,16 @@
 package org.sinfo.security.jwt;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.stream.Collectors;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.sinfo.security.auth.bo.SecurityUser;
+import org.sinfo.security.auth.dto.UserDto;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -37,6 +41,10 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication)
     throws IOException, ServletException {
         String name = authentication.getName();
-        tokenAuthenticationService.addAuthentication(response, name);
+        String jwt = tokenAuthenticationService.addAuthentication(response, name);
+        ObjectMapper mapper = new ObjectMapper();
+        PrintWriter writer = response.getWriter();
+        mapper.writeValue(writer, jwt);
+        writer.flush();
     }
 }

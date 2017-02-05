@@ -18,7 +18,7 @@ public class TokenAuthenticationService {
     private String tokenPrefix = "Bearer";
     private String headerString = "Authorization";
 
-    public void addAuthentication(HttpServletResponse response, String username) {
+    public String addAuthentication(HttpServletResponse response, String username) {
         // We generate a token now.
         String JWT = Jwts.builder()
             .setSubject(username)
@@ -32,6 +32,7 @@ public class TokenAuthenticationService {
         cookie.setPath("/");
         cookie.setSecure(false);
         response.addCookie(cookie);
+        return JWT;
     }
 
     public Authentication getAuthentication(HttpServletRequest request) {
