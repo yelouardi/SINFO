@@ -26,7 +26,7 @@ public class WebSecurityConfigJwt extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // disable caching
-        http.headers().cacheControl();
+        //http.headers().cacheControl();
 
         http.csrf().disable() // disable csrf for our requests.
                 .authorizeRequests().antMatchers("/").permitAll().antMatchers(HttpMethod.POST, "/login").permitAll()
